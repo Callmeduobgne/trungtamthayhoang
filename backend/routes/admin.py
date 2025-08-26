@@ -5,32 +5,62 @@ from utils import admin_required
 
 admin_bp = Blueprint('admin', __name__)
 
+@admin_bp.route('/health', methods=['GET'])
+def health_check():
+    try:
+        # Thử truy vấn một thông tin đơn giản từ DB
+        student_count = Student.objects.count()
+        return jsonify({'status': 'ok', 'db_connection': True, 'student_count': student_count}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'db_connection': False, 'message': str(e)}), 500
+
+
+@admin_bp.route('/stats', methods=['GET'])
+@admin_required
+def get_stats():
+    try:
+        total_students = Student.objects.count()
+        active_students = Student.objects(status='active').count()
+        total_teachers = Teacher.objects.count()
+        total_classes = Class.objects.count()
+
+        stats = {
+            'students': total_students,
+            'activeStudents': active_students,
+            'teachers': total_teachers,
+            'classes': total_classes
+        }
+        return jsonify(stats), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+
 @admin_bp.route('/students', methods=['GET'])
 @admin_required
 def get_students():
     try:
         search = request.args.get('search', '')
-        
+
         if search:
             students = Student.objects(full_name__icontains=search)
         else:
             students = Student.objects()
-        
+
         students_data = []
         for student in students:
             student_dict = student.to_mongo().to_dict()
             student_dict['_id'] = str(student_dict['_id'])
-            
+
             if student.class_id:
                 class_obj = Class.objects(id=student.class_id).first()
                 student_dict['class_name'] = class_obj.name if class_obj else 'N/A'
             else:
                 student_dict['class_name'] = 'N/A'
-                
+
             students_data.append(student_dict)
-        
+
         return jsonify({'students': students_data}), 200
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -39,10 +69,10 @@ def get_students():
 def create_student():
     try:
         data = request.get_json()
-        
+
         if Student.objects(phone=data['phone']).first():
             return jsonify({'message': 'Phone exists'}), 409
-        
+
         student = Student(
             full_name=data['full_name'],
             phone=data['phone'],
@@ -54,11 +84,11 @@ def create_student():
             parent_phone=data.get('parent_phone', ''),
             status='active'
         )
-        
+
         student.save()
-        
+
         return jsonify({'message': 'Student created'}), 201
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -69,9 +99,9 @@ def update_student(student_id):
         student = Student.objects(id=student_id).first()
         if not student:
             return jsonify({'message': 'Student not found'}), 404
-        
+
         data = request.get_json()
-        
+
         student.full_name = data.get('full_name', student.full_name)
         student.phone = data.get('phone', student.phone)
         student.date_of_birth = data.get('date_of_birth', student.date_of_birth)
@@ -80,11 +110,11 @@ def update_student(student_id):
         student.parent_name = data.get('parent_name', student.parent_name)
         student.parent_phone = data.get('parent_phone', student.parent_phone)
         student.status = data.get('status', student.status)
-        
+
         student.save()
-        
+
         return jsonify({'message': 'Student updated'}), 200
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -95,12 +125,12 @@ def delete_student(student_id):
         student = Student.objects(id=student_id).first()
         if not student:
             return jsonify({'message': 'Student not found'}), 404
-        
+
         student.status = 'deleted'
         student.save()
-        
+
         return jsonify({'message': 'Student deleted'}), 200
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -110,20 +140,20 @@ def delete_student(student_id):
 def get_teachers():
     try:
         search = request.args.get('search', '')
-        
+
         if search:
             teachers = Teacher.objects(full_name__icontains=search)
         else:
             teachers = Teacher.objects()
-        
+
         teachers_data = []
         for teacher in teachers:
             teacher_dict = teacher.to_mongo().to_dict()
             teacher_dict['_id'] = str(teacher_dict['_id'])
             teachers_data.append(teacher_dict)
-        
+
         return jsonify({'teachers': teachers_data}), 200
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -132,7 +162,7 @@ def get_teachers():
 def create_teacher():
     try:
         data = request.get_json()
-        
+
         teacher = Teacher(
             full_name=data['full_name'],
             position=data.get('position', ''),
@@ -142,11 +172,11 @@ def create_teacher():
             email=data.get('email', ''),
             status=data.get('status', 'active')
         )
-        
+
         teacher.save()
-        
+
         return jsonify({'message': 'Teacher created', 'teacher_id': str(teacher.id)}), 201
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -157,9 +187,9 @@ def update_teacher(teacher_id):
         teacher = Teacher.objects(id=teacher_id).first()
         if not teacher:
             return jsonify({'message': 'Teacher not found'}), 404
-        
+
         data = request.get_json()
-        
+
         teacher.full_name = data.get('full_name', teacher.full_name)
         teacher.position = data.get('position', teacher.position)
         teacher.date_of_birth = data.get('date_of_birth', teacher.date_of_birth)
@@ -167,11 +197,11 @@ def update_teacher(teacher_id):
         teacher.phone = data.get('phone', teacher.phone)
         teacher.email = data.get('email', teacher.email)
         teacher.status = data.get('status', teacher.status)
-        
+
         teacher.save()
-        
+
         return jsonify({'message': 'Teacher updated'}), 200
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -182,12 +212,12 @@ def delete_teacher(teacher_id):
         teacher = Teacher.objects(id=teacher_id).first()
         if not teacher:
             return jsonify({'message': 'Teacher not found'}), 404
-        
+
         teacher.status = 'deleted'
         teacher.save()
-        
+
         return jsonify({'message': 'Teacher deleted'}), 200
-        
+
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 

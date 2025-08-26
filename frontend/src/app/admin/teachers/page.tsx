@@ -36,7 +36,7 @@ export default function TeachersPage() {
       status: 'active'
     },
     {
-      _id: '2', 
+      _id: '2',
       full_name: 'Trần Văn Minh',
       position: 'Phó hiệu trưởng',
       date_of_birth: '1980-07-22',
@@ -125,27 +125,30 @@ export default function TeachersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="border-b border-yellow-400 bg-gray-800 px-6 py-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Quản lý giáo viên</h1>
+    <div className="min-h-screen bg-slate-900 text-white">
+      <div className="border-b border-yellow-400 bg-slate-800 px-4 md:px-6 py-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-bold">Quản lý giáo viên</h1>
+            <p className="text-slate-400 text-sm">Danh sách và thông tin giáo viên</p>
+          </div>
           <button
-            onClick={() => {setEditTeacher(undefined); setModalOpen(true)}}
-            className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-medium transition-colors"
+            onClick={() => { setEditTeacher(undefined); setModalOpen(true) }}
+            className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-semibold transition-colors"
           >
             + Thêm giáo viên
           </button>
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="mb-6">
           <input
             type="text"
             placeholder="Tìm kiếm giáo viên theo tên hoặc môn học..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-md px-4 py-2 bg-gray-800 border border-gray-600 text-white rounded-lg focus:border-yellow-400 transition-colors"
+            className="w-full md:w-96 px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
         </div>
 
@@ -159,9 +162,8 @@ export default function TeachersPage() {
                       {teacher.full_name.split(' ').slice(-1)[0].charAt(0)}
                     </span>
                   </div>
-                  <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 border-gray-800 ${
-                    teacher.status === 'active' ? 'bg-green-400' : 'bg-red-400'
-                  }`}></div>
+                  <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 border-gray-800 ${teacher.status === 'active' ? 'bg-green-400' : 'bg-red-400'
+                    }`}></div>
                 </div>
 
                 <h3 className="text-lg font-semibold text-white mb-1">{teacher.full_name}</h3>
@@ -171,7 +173,7 @@ export default function TeachersPage() {
 
                 <div className="flex justify-center space-x-2 mt-4 pt-4 border-t border-gray-700">
                   <button
-                    onClick={() => {setEditTeacher(teacher); setModalOpen(true)}}
+                    onClick={() => { setEditTeacher(teacher); setModalOpen(true) }}
                     className="text-yellow-400 hover:text-yellow-300 p-2 rounded-lg hover:bg-gray-700 transition-colors"
                     title="Sửa thông tin"
                   >
@@ -210,7 +212,7 @@ export default function TeachersPage() {
         <TeacherModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          onSave={() => {/* Implement save logic */}}
+          onSave={() => {/* Implement save logic */ }}
           teacher={editTeacher}
         />
       )}
@@ -258,19 +260,19 @@ function TeacherModal({ isOpen, onClose, onSave, teacher }: Readonly<ModalProps>
         <h2 className="text-xl font-bold text-white mb-4">
           {teacher ? 'Sửa thông tin giáo viên' : 'Thêm giáo viên mới'}
         </h2>
-        
+
         <form className="space-y-4">
           <input
             type="text"
             placeholder="Họ và tên"
             value={formData.full_name}
-            onChange={(e) => setFormData({...formData, full_name: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
-          
+
           <select
             value={formData.position}
-            onChange={(e) => setFormData({...formData, position: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, position: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           >
             <option value="">Chọn chức vụ</option>
@@ -284,7 +286,7 @@ function TeacherModal({ isOpen, onClose, onSave, teacher }: Readonly<ModalProps>
           <input
             type="date"
             value={formData.date_of_birth}
-            onChange={(e) => setFormData({...formData, date_of_birth: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 
@@ -292,7 +294,7 @@ function TeacherModal({ isOpen, onClose, onSave, teacher }: Readonly<ModalProps>
             type="text"
             placeholder="Môn học"
             value={formData.subject}
-            onChange={(e) => setFormData({...formData, subject: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 
@@ -300,7 +302,7 @@ function TeacherModal({ isOpen, onClose, onSave, teacher }: Readonly<ModalProps>
             type="text"
             placeholder="Số điện thoại"
             value={formData.phone}
-            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 
@@ -308,7 +310,7 @@ function TeacherModal({ isOpen, onClose, onSave, teacher }: Readonly<ModalProps>
             type="email"
             placeholder="Email"
             value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 

@@ -75,59 +75,60 @@ export default function StudentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="border-b border-yellow-400 bg-gray-800 px-6 py-4">
-        <div className="flex justify-between items-center">
+    <div className="min-h-screen bg-slate-900 text-white">
+      <div className="border-b border-yellow-400 bg-slate-800 px-4 md:px-6 py-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <h1 className="text-2xl font-bold">Quản lý học sinh</h1>
           <button
-            onClick={() => {setEditStudent(undefined); setModalOpen(true)}}
-            className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded"
+            onClick={() => { setEditStudent(undefined); setModalOpen(true) }}
+            className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded font-semibold transition-colors"
           >
-            Thêm học sinh
+            + Thêm học sinh
           </button>
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="mb-4">
+      <div className="p-4 md:p-6">
+        <div className="mb-6">
           <input
             type="text"
             placeholder="Tìm kiếm học sinh..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-md px-4 py-2 bg-gray-800 border border-gray-600 text-white rounded"
+            className="w-full md:w-96 px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
         </div>
 
-        <div className="bg-gray-800 border border-yellow-400 rounded-lg overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-700">
-              <tr>
-                <th className="px-4 py-3 text-left">Họ tên</th>
-                <th className="px-4 py-3 text-left">Số điện thoại</th>
-                <th className="px-4 py-3 text-left">Lớp</th>
-                <th className="px-4 py-3 text-left">Trạng thái</th>
-                <th className="px-4 py-3 text-left">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student._id} className="border-t border-gray-700 hover:bg-gray-700">
-                  <td className="px-4 py-3">{student.full_name}</td>
-                  <td className="px-4 py-3">{student.phone}</td>
-                  <td className="px-4 py-3">{student.class_name || 'N/A'}</td>
-                  <td className="px-4 py-3">
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      student.status === 'active' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
-                    }`}>
-                      {student.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex space-x-2">
+        <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-slate-700">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Họ tên</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">SĐT</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Lớp</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Phụ Huynh</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Trạng thái</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-700">
+                {students.map((student) => (
+                  <tr key={student._id} className="hover:bg-slate-750">
+                    <td className="px-6 py-4 whitespace-nowrap text-white">{student.full_name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-slate-300">{student.phone}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-slate-300">{student.class_name || 'N/A'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-slate-300">{student.parent_name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 text-xs rounded-full ${student.status === 'active' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
+                        }`}>
+                        {student.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
-                        onClick={() => {setEditStudent(student); setModalOpen(true)}}
-                        className="text-yellow-400 hover:text-yellow-300"
+                        onClick={() => { setEditStudent(student); setModalOpen(true) }}
+                        className="text-yellow-400 hover:text-yellow-300 mr-3"
                       >
                         Sửa
                       </button>
@@ -137,15 +138,15 @@ export default function StudentsPage() {
                       >
                         Xóa
                       </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {students.length === 0 && (
-            <div className="text-center py-8 text-gray-400">Không tìm thấy học sinh nào</div>
+            <div className="text-center py-8 text-slate-400">Không tìm thấy học sinh nào</div>
           )}
         </div>
       </div>
@@ -203,10 +204,10 @@ function StudentModal({ isOpen, onClose, onSave, student }: ModalProps) {
 
     try {
       const token = localStorage.getItem('access_token')
-      const url = student 
+      const url = student
         ? `http://localhost:5001/admin/students/${student._id}`
         : 'http://localhost:5001/admin/students'
-      
+
       const response = await fetch(url, {
         method: student ? 'PUT' : 'POST',
         headers: {
@@ -237,22 +238,22 @@ function StudentModal({ isOpen, onClose, onSave, student }: ModalProps) {
         <h2 className="text-xl font-bold text-white mb-4">
           {student ? 'Sửa thông tin học sinh' : 'Thêm học sinh mới'}
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             placeholder="Họ và tên"
             value={formData.full_name}
-            onChange={(e) => setFormData({...formData, full_name: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
             required
           />
-          
+
           <input
             type="text"
             placeholder="Số điện thoại"
             value={formData.phone}
-            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
             required
           />
@@ -260,13 +261,13 @@ function StudentModal({ isOpen, onClose, onSave, student }: ModalProps) {
           <input
             type="date"
             value={formData.date_of_birth}
-            onChange={(e) => setFormData({...formData, date_of_birth: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 
           <select
             value={formData.gender}
-            onChange={(e) => setFormData({...formData, gender: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           >
             <option value="">Chọn giới tính</option>
@@ -278,7 +279,7 @@ function StudentModal({ isOpen, onClose, onSave, student }: ModalProps) {
             type="text"
             placeholder="Tên phụ huynh"
             value={formData.parent_name}
-            onChange={(e) => setFormData({...formData, parent_name: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, parent_name: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 
@@ -286,7 +287,7 @@ function StudentModal({ isOpen, onClose, onSave, student }: ModalProps) {
             type="text"
             placeholder="Số điện thoại phụ huynh"
             value={formData.parent_phone}
-            onChange={(e) => setFormData({...formData, parent_phone: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, parent_phone: e.target.value })}
             className="w-full px-3 py-2 bg-gray-800 border border-gray-600 text-white rounded"
           />
 

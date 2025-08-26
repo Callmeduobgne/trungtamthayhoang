@@ -4,7 +4,7 @@ from datetime import timedelta
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
     MONGODB_SETTINGS = {
-        'host': os.environ.get('DATABASE_URL', 'mongodb://localhost:27017/school_db')
+        'host': os.environ.get('MONGO_URI', 'mongodb://localhost:27017/trungtamthayhoang')
     }
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-secret-key'
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
