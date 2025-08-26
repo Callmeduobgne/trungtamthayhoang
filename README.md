@@ -5,18 +5,21 @@ Hệ thống quản lý trung tâm giáo dục với giao diện hiện đại v
 ## 🚀 Tính năng
 
 ### 👨‍💼 Quản trị viên
+
 - ✅ Quản lý học sinh (CRUD operations)
 - ✅ Quản lý giáo viên (Card layout đẹp mắt)
 - ✅ Dashboard với thống kê tổng quan
 - ✅ Dark theme chuyên nghiệp
 
 ### 🔐 Hệ thống xác thực
+
 - ✅ Đăng nhập/Đăng ký
 - ✅ JWT Authentication
 - ✅ Phân quyền theo vai trò
 - ✅ Quên mật khẩu với OTP
 
 ### 🌐 Giao diện
+
 - ✅ Responsive design
 - ✅ Dark theme với accent màu vàng
 - ✅ IBM Network styling
@@ -25,12 +28,14 @@ Hệ thống quản lý trung tâm giáo dục với giao diện hiện đại v
 ## 🛠 Công nghệ sử dụng
 
 ### Backend
+
 - **Python 3.13** với Flask
 - **MongoDB** với MongoEngine
 - **JWT** cho authentication
 - **Flask-CORS** cho cross-origin requests
 
 ### Frontend  
+
 - **Next.js 15.5.0** với TypeScript
 - **Tailwind CSS** cho styling
 - **React Hooks** cho state management
@@ -38,15 +43,39 @@ Hệ thống quản lý trung tâm giáo dục với giao diện hiện đại v
 ## 📦 Cài đặt
 
 ### 1. Clone repository
+
 ```bash
 git clone https://github.com/Callmeduobgne/trungtamthayhoang.git
 cd trungtamthayhoang
 ```
 
 ### 2. Backend Setup
+
 ```bash
 # Tạo virtual environment
 python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
+
+# Cài đặt dependencies
+cd backend
+pip install -r requirements.txt
+
+# Khởi tạo dữ liệu mẫu
+cd ..
+python init_data.py
+
+# Chạy backend server
+python run_backend.py
+```
+
+### 3. Frontend Setup
+
+```bash
+cd frontend-nextjs
+npm install
+npm run dev
+```
 source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate   # Windows
 
@@ -133,7 +162,6 @@ trungtamthayhoang/
 This project is licensed under the MIT License.
 
 ## 📧 Contact
-
 Project Link: [https://github.com/Callmeduobgne/trungtamthayhoang](https://github.com/Callmeduobgne/trungtamthayhoang)
 
 ---
